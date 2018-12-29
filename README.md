@@ -13,7 +13,7 @@ This plugin is free but if you use it in a commercial project please consider to
 
 ## Screenshots
 
-![clean & loot](https://raw.githubusercontent.com/bnomei/kirby3-doctor/master/kirby3-doctor-screenshot-1.gif)
+![doctor](https://raw.githubusercontent.com/bnomei/kirby3-doctor/master/kirby3-doctor-screenshot-1.gif)
 
 ## Usage Kirby Panel
 
@@ -50,6 +50,18 @@ let doctor = fetch('https://devkit.bnomei.com/api/plugin-doctor/check')
 - CheckSSL: Using `https` scheme
 
 ## Custom Checks
+
+You can add custom checks or disable build checks using the `checks` setting in the config file.
+
+```
+return [
+    'bnomei.doctor.checks' => [
+        "MyNamespace\\MyClass" => true, // enable new
+        "Bnomei\\CheckComposerSecurity" => false, // disable build-in
+    ],
+    // ...
+];
+```
 
 > Contribute: You have an idea for a check? Please [create a new issue](https://github.com/bnomei/kirby3-doctor/issues/new) or submit a PR.
 
