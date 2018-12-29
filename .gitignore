@@ -1,0 +1,6 @@
+/vendor
+/node_modules
+/kirby3-doctor.zip
+/composer.lock
+/kirby
+/todo

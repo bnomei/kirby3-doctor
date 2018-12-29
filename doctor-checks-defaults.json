@@ -1,0 +1,10 @@
+{
+  "Bnomei\\CheckComposerSecurity": true,
+  "Bnomei\\CheckGitFolder": true,
+  "Bnomei\\CheckSSL": true,
+  "Bnomei\\CheckHtaccess": true,
+  "Bnomei\\CheckKirbyVersion": true,
+  "Bnomei\\CheckKirbyAccount": true,
+  "Bnomei\\CheckKirbyCacheSize": true,
+  "Bnomei\\CheckKirbyMediaSize": true
+}
