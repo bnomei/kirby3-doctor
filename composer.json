@@ -1,7 +1,7 @@
 {
     "name": "bnomei/kirby3-doctor",
     "type": "plugin",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Kirby 3 Plugin to check health of your CMS installation.",
     "license": "MIT",
     "authors": [
@@ -14,6 +14,7 @@
         "kirby3",
         "kirby3-cms",
         "kirby3-plugin",
+        "system",
         "doctor",
         "check",
         "health",
@@ -55,6 +56,7 @@
     },
     "scripts": {
         "zip": [
+            "touch kirby3-doctor.zip",
             "rm kirby3-doctor.zip",
             "composer install --no-dev",
             "composer remove getkirby/cms",

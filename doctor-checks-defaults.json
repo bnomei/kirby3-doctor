@@ -5,6 +5,7 @@
   "Bnomei\\CheckHtaccess": true,
   "Bnomei\\CheckKirbyVersion": true,
   "Bnomei\\CheckKirbyAccount": true,
+  "Bnomei\\CheckKirbySystem": true,
   "Bnomei\\CheckKirbyCacheSize": true,
   "Bnomei\\CheckKirbyMediaSize": true
 }

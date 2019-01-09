@@ -55,7 +55,7 @@ class Doctor
             'gd',
         ]));
 
-        if(function_exists('kirby')) {
+        if (function_exists('kirby')) {
             $checkReadable = new \ZendDiagnostics\Check\DirReadable([
                 kirby()->roots()->assets(),
                 kirby()->roots()->blueprints(),
@@ -80,6 +80,7 @@ class Doctor
                 kirby()->roots()->cache(),
                 kirby()->roots()->media(),
                 kirby()->roots()->sessions(),
+                kirby()->roots()->config(), // write .license file
             ]);
             $runner->addCheck($checkWriteable);
         }

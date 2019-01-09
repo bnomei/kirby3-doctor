@@ -46,6 +46,7 @@ let doctor = fetch('https://devkit.bnomei.com/api/plugin-doctor/check')
 - CheckKirbyAccount: Has at least one account
 - CheckKirbyCacheSize: Cache folder not too big
 - CheckKirbyMediaSize: Media folder not too big
+- CheckKirbySystem: Kirby build-in system checks
 - CheckKirbyVersion: Is Kirby up-to-date
 - CheckSSL: Using `https` scheme
 
