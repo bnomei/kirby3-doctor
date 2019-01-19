@@ -25,7 +25,7 @@ class CheckKirbyVersion implements CheckInterface, DoctorInterface
                     unset($json['dev-master']);
                 }
                 $keys = array_keys($json);
-                $remoteVersion = $json[$keys[count($keys) - 1]];
+                $remoteVersion = $json[$keys[count($keys) - 1]]["version"];
             }
         } catch (\Exception $ex) {
             return new Failure($ex->getMessage());

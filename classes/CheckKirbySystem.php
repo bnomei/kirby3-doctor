@@ -11,7 +11,7 @@ class CheckKirbySystem implements CheckInterface, DoctorInterface
 {
     public function check()
     {
-        $allChecks = new \Kirby\System\System(kirby());
+        $system = new \Kirby\Cms\System(kirby());
         // https://github.com/k-next/kirby/blob/master/src/Cms/System.php#L58
         foreach ($system->status() as $key => $check) {
             if (!$check) {

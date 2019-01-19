@@ -14,7 +14,7 @@ This plugin is free but if you use it in a commercial project please consider to
 ## Installation
 
 - for devkit-setup use `composer require bnomei/kirby3-doctor` or
-- extract latest release of [kirby3-doctor.zip](https://github.com/bnomei/kirby3-doctor/releases/download/v1.0.2/kirby3-doctor.zip) as folder `site/plugins/kirby3-doctor`
+- extract latest release of [kirby3-doctor.zip](https://github.com/bnomei/kirby3-doctor/releases/download/v1.0.3/kirby3-doctor.zip) as folder `site/plugins/kirby3-doctor`
 
 > Installation as a gitsubmodule is *not* supported.
 
