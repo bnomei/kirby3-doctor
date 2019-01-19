@@ -53,6 +53,7 @@ let doctor = fetch('https://devkit.bnomei.com/api/plugin-doctor/check')
 - CheckHtaccess: Has a `.htaccess` file
 - CheckKirbyAccount: Has at least one account
 - CheckKirbyCacheSize: Cache folder not too big
+- CheckKirbyLicense: License exists (on non localhost)
 - CheckKirbyMediaSize: Media folder not too big
 - CheckKirbySystem: Kirby build-in system checks
 - CheckKirbyVersion: Is Kirby up-to-date
