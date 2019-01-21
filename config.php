@@ -19,8 +19,8 @@ Kirby::plugin('bnomei/doctor', [
     'fields' => [
         'doctor' => [
             'props' => [
-                'label' => function (string $label = 'Perform checks') {
-                    return $label;
+                'label' => function ($label = 'Perform checks') {
+                    return \Kirby\Toolkit\I18n::translate($label, $label);
                 },
                 'job' => function (string $job = 'check') {
                     return 'plugin-doctor/' . $job;
@@ -28,8 +28,8 @@ Kirby::plugin('bnomei/doctor', [
                 'cooldown' => function (int $cooldownMilliseconds = 2000) {
                     return intval(option('bnomei.doctor.label.cooldown', $cooldownMilliseconds));
                 },
-                'progress' => function (string $progress = 'Performing checks...') {
-                    return $progress;
+                'progress' => function ($progress = 'Performing checks...') {
+                    return \Kirby\Toolkit\I18n::translate($progress, $progress);
                 },
                 'results' => function (array $results = []) {
                     return $results;

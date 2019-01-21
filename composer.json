@@ -1,7 +1,7 @@
 {
     "name": "bnomei/kirby3-doctor",
     "type": "plugin",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Kirby 3 Plugin to check health of your CMS installation.",
     "license": "MIT",
     "authors": [
@@ -34,12 +34,6 @@
         "optimize-autoloader": true,
         "sort-packages": true
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/k-next/kirby"
-        }
-    ],
     "require": {
         "php": ">=7.1.0",
         "getkirby/cms": "^3.0.0-RC-2.0",
