@@ -15,17 +15,18 @@ class CheckKirbyVersion implements CheckInterface, DoctorInterface
         $remoteVersion = null;
 
         try {
-            $url = option('bnomei.doctor.checkkirbyversion.url', 'https://repo.packagist.org/p/getkirby/kirby.json');
+            $url = option('bnomei.doctor.checkkirbyversion.url', 'https://repo.packagist.org/p/getkirby/cms.json');
             if ($request = \Kirby\Http\Remote::get($url)) {
-                $json = json_decode($request->content(), true)['packages']['getkirby/kirby'];
-                if (array_key_exists('dev-develop', $json)) {
-                    unset($json['dev-develop']);
+                $json = json_decode($request->content(), true)['packages']['getkirby/cms'];
+
+                $versions = [];
+                foreach ($json as $ver => $info) {
+                    if (strpos($ver, 'rc') === false && strpos($ver, 'dev') === false) {
+                        $versions[] = $ver;
+                    }
                 }
-                if (array_key_exists('dev-master', $json)) {
-                    unset($json['dev-master']);
-                }
-                $keys = array_keys($json);
-                $remoteVersion = $json[$keys[count($keys) - 1]]["version"];
+
+                $remoteVersion = $versions[count($versions) - 1];
             }
         } catch (\Exception $ex) {
             return new Failure($ex->getMessage());
