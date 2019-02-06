@@ -11,7 +11,7 @@ class CheckKirbyLicense implements CheckInterface, DoctorInterface
 {
     public function check()
     {
-        if(self::isLocalhost()) {
+        if (self::isLocalhost()) {
             return new Success('Valid license not required on localhost.');
         }
 

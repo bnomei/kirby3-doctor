@@ -29,10 +29,9 @@ class DoctorReporter implements ReporterInterface
     {
         // in case this method returns false, the runner will abort checking.
         $level = 'info';
-        if($result instanceof \ZendDiagnostics\Result\WarningInterface) {
+        if ($result instanceof \ZendDiagnostics\Result\WarningInterface) {
             $level = 'warning';
-        }
-        else if ($result instanceof \ZendDiagnostics\Result\FailureInterface) {
+        } elseif ($result instanceof \ZendDiagnostics\Result\FailureInterface) {
             $level = 'error';
         }
         \Bnomei\Doctor::log(get_class($check).': '. $result->getMessage(), $level);

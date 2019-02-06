@@ -17,7 +17,7 @@ class CheckComposerSecurity implements CheckInterface, DoctorInterface
         $hasVendorFolder = \Kirby\Toolkit\Dir::isReadable($vendorFolder) &&
             !\Kirby\Toolkit\Dir::isEmpty($vendorFolder);
 
-        if($hasComposerLock && $hasVendorFolder) {
+        if ($hasComposerLock && $hasVendorFolder) {
             $checker = new \SensioLabs\Security\SecurityChecker();
             $result = $checker->check($composerLock, 'json');
             $json = json_decode((string) $result, true);
