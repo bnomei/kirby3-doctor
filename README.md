@@ -71,7 +71,16 @@ return [
 ];
 ```
 
-> Contribute: You have an idea for a check? Please [create a new issue](https://github.com/bnomei/kirby3-doctor/issues/new) or submit a PR.
+You can also use your own plugin to define checks (since 1.2.0). Many thanks to @fabianmichael for the great idea.
+````
+Kirby::plugin('my/plugin', [        // your plugin
+  'bnomei.doctor.checks' => [       // required option id
+    "MyNamespace\\MyClass" => true, // enable new
+  ],
+]);
+```
+
+> Contribute: You have an idea for a check or a plugin defining a check? Please [create a new issue](https://github.com/bnomei/kirby3-doctor/issues/new) or submit a PR.
 
 ## Settings
 

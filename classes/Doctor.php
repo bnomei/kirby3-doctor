@@ -15,7 +15,7 @@ class Doctor
 
     public static function readCheckDefaults()
     {
-        $file = realpath(__DIR__.'/../doctor-checks-defaults.json');
+        $file = realpath(__DIR__ . '/../doctor-checks-defaults.json');
         if (file_exists($file)) {
             return json_decode(file_get_contents($file), true);
         } else {
@@ -31,6 +31,13 @@ class Doctor
             if (is_array($defaults) && is_array($checks)) {
                 $defaults = array_merge($defaults, $checks);
             }
+        }
+        if (function_exists('kirby')) {
+            $pluginChecks = [];
+            foreach (kirby()->plugins() as $plugin) {
+                $pluginChecks = array_merge($pluginChecks, $plugin->extends()['bnomei.doctor.checks'] ?? []);
+            }
+            $defaults = array_merge($defaults, $pluginChecks);
         }
         $validChecks = [];
         foreach ($defaults as $classname => $enabled) {
@@ -74,7 +81,7 @@ class Doctor
                 kirby()->roots()->templates(),
             ]);
             $runner->addCheck($checkReadable);
-            
+
             $checkWriteable = new \ZendDiagnostics\Check\DirWritable([
                 kirby()->roots()->accounts(),
                 kirby()->roots()->cache(),
@@ -133,7 +140,7 @@ class Doctor
         return $checkResult;
     }
 
-    public static function log(string $msg = '', string $level = 'info', array $context = []):bool
+    public static function log(string $msg = '', string $level = 'info', array $context = []): bool
     {
         $log = option('bnomei.doctor.log');
         if ($log && is_callable($log)) {
@@ -150,9 +157,9 @@ class Doctor
     public static function findComposerLockFile(): ?string
     {
         foreach ([
-            kirby()->roots()->index().'/composer.lock', // plainkit
-            realpath(kirby()->roots()->index().'/../composer.lock'), // devkit
-            realpath(kirby()->roots()->index().option('bnomei.doctor.checkcomposerlocksecurity.path', ''))
+            kirby()->roots()->index() . '/composer.lock', // plainkit
+            realpath(kirby()->roots()->index() . '/../composer.lock'), // devkit
+            realpath(kirby()->roots()->index() . option('bnomei.doctor.checkcomposerlocksecurity.path', ''))
         ] as $p) {
             if (\Kirby\Toolkit\F::exists($p)) {
                 return $p;
