@@ -72,7 +72,7 @@ return [
 ```
 
 You can also use your own plugin to define checks (since 1.2.0). Many thanks to @fabianmichael for the great idea.
-````
+```
 Kirby::plugin('my/plugin', [        // your plugin
   'bnomei.doctor.checks' => [       // required option id
     "MyNamespace\\MyClass" => true, // enable new
