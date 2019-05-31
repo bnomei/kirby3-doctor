@@ -7,8 +7,9 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ZendDiagnostics\\' => array($vendorDir . '/zendframework/zenddiagnostics/src'),
+    'Symfony\\Polyfill\\Php73\\' => array($vendorDir . '/symfony/polyfill-php73'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
-    'Symfony\\Contracts\\' => array($vendorDir . '/symfony/contracts'),
+    'Symfony\\Contracts\\Service\\' => array($vendorDir . '/symfony/service-contracts'),
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
     'SensioLabs\\Security\\' => array($vendorDir . '/sensiolabs/security-checker/SensioLabs/Security'),
     'Kirby\\' => array($vendorDir . '/getkirby/composer-installer/src'),
