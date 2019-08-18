@@ -28,9 +28,11 @@ final class CheckKirbyVersion implements CheckInterface, Doctor
                 }
             }
             $remoteVersion = count($versions) > 0 ? $versions[count($versions) - 1] : null;
+            // @codeCoverageIgnoreStart
         } catch (\Exception $exc) {
             return new Failure($exc->getMessage());
         }
+        // @codeCoverageIgnoreEnd
 
         if ($localVersion === $remoteVersion) {
             return new Success('Kirby CMS version is most current available.');

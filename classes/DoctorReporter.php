@@ -14,6 +14,12 @@ use ZendDiagnostics\Runner\Reporter\ReporterInterface;
 
 final class DoctorReporter implements ReporterInterface
 {
+    /**
+     * @param ArrayObject $checks
+     * @param array $runnerConfig
+     *
+     * @codeCoverageIgnore
+     */
     public function onStart(ArrayObject $checks, $runnerConfig)
     {
     }
@@ -39,10 +45,20 @@ final class DoctorReporter implements ReporterInterface
         \Bnomei\Doctor::log(get_class($check) . ': ' . $result->getMessage(), $level);
     }
 
+    /**
+     * @param ResultCollection $results
+     *
+     * @codeCoverageIgnore
+     */
     public function onStop(ResultCollection $results)
     {
     }
 
+    /**
+     * @param ResultCollection $results
+     *
+     * @codeCoverageIgnore
+     */
     public function onFinish(ResultCollection $results)
     {
     }
