@@ -1,13 +1,15 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Bnomei;
 
+use Bnomei\Interfaces\Doctor;
 use ZendDiagnostics\Check\CheckInterface;
-use ZendDiagnostics\Result\Success;
 use ZendDiagnostics\Result\Failure;
-use Bnomei\DoctorInterface;
-use PHPMailer\PHPMailer\Exception;
+use ZendDiagnostics\Result\Success;
 
-class CheckKirbyVersion implements CheckInterface, DoctorInterface
+final class CheckKirbyVersion implements CheckInterface, Doctor
 {
     public function check()
     {
@@ -16,23 +18,21 @@ class CheckKirbyVersion implements CheckInterface, DoctorInterface
 
         try {
             $url = option('bnomei.doctor.checkkirbyversion.url', 'https://repo.packagist.org/p/getkirby/cms.json');
-            if ($request = \Kirby\Http\Remote::get($url)) {
-                $json = json_decode($request->content(), true)['packages']['getkirby/cms'];
+            $request = \Kirby\Http\Remote::get($url);
+            $json = $request ? json_decode($request->content(), true)['packages']['getkirby/cms'] : null;
 
-                $versions = [];
-                foreach ($json as $ver => $info) {
-                    if (strpos($ver, 'rc') === false && strpos($ver, 'dev') === false) {
-                        $versions[] = $ver;
-                    }
+            $versions = [];
+            foreach (array_keys($json) as $ver) {
+                if (strpos($ver, 'rc') === false && strpos($ver, 'dev') === false) {
+                    $versions[] = $ver;
                 }
-
-                $remoteVersion = $versions[count($versions) - 1];
             }
-        } catch (\Exception $ex) {
-            return new Failure($ex->getMessage());
+            $remoteVersion = count($versions) > 0 ? $versions[count($versions) - 1] : null;
+        } catch (\Exception $exc) {
+            return new Failure($exc->getMessage());
         }
 
-        if ($localVersion == $remoteVersion) {
+        if ($localVersion === $remoteVersion) {
             return new Success('Kirby CMS version is most current available.');
         }
 

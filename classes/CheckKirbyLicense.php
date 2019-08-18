@@ -1,13 +1,15 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Bnomei;
 
+use Bnomei\Interfaces\Doctor;
 use ZendDiagnostics\Check\CheckInterface;
-use ZendDiagnostics\Result\Success;
 use ZendDiagnostics\Result\Failure;
-use Bnomei\DoctorInterface;
-use PHPMailer\PHPMailer\Exception;
+use ZendDiagnostics\Result\Success;
 
-class CheckKirbyLicense implements CheckInterface, DoctorInterface
+final class CheckKirbyLicense implements CheckInterface, Doctor
 {
     public function check()
     {
@@ -37,6 +39,7 @@ class CheckKirbyLicense implements CheckInterface, DoctorInterface
 
     private function isLocalhost()
     {
-        return in_array($_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ));
+        $addr = isset($_SERVER) && count($_SERVER) ? kirby()->server()->address() : ['::1'] ; // $_SERVER['REMOTE_ADDR'];
+        return in_array($addr, ['127.0.0.1', '::1']);
     }
 }

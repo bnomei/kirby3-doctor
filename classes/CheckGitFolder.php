@@ -1,12 +1,15 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Bnomei;
 
+use Bnomei\Interfaces\Doctor;
 use ZendDiagnostics\Check\CheckInterface;
-use ZendDiagnostics\Result\Success;
 use ZendDiagnostics\Result\Failure;
-use Bnomei\DoctorInterface;
+use ZendDiagnostics\Result\Success;
 
-class CheckGitFolder implements CheckInterface, DoctorInterface
+final class CheckGitFolder implements CheckInterface, Doctor
 {
     public function check()
     {

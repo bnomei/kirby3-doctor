@@ -1,11 +1,14 @@
 # OS files
 .DS_Store
-.php_cs.cache
+*.cache
+.idea
 
 /node_modules
 /todo
 
-.cache
+# phpunit tests
+tests/kirby
+tests/logs
 
 # files of Composer dependencies that are not needed for the plugin
 /vendor/**/.*

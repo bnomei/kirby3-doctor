@@ -10,7 +10,7 @@ Kirby::plugin('bnomei/doctor', [
         'label.cooldown' => 2000,
         'checks' => [],
         'log.enabled' => true,
-        'log' => function (string $msg, string $level = 'info', array $context = []):bool {
+        'log' => function (string $msg, string $level = 'info', array $context = []): bool {
             if (option('bnomei.doctor.log.enabled') && function_exists('kirbyLog')) {
                 kirbyLog('bnomei.doctor.log')->log($msg, $level, $context);
                 return true;
@@ -36,8 +36,8 @@ Kirby::plugin('bnomei/doctor', [
                 'results' => function (array $results = []) {
                     return $results;
                 },
-            ]
-        ]
+            ],
+        ],
     ],
     'api' => [
         'routes' => [
@@ -47,7 +47,7 @@ Kirby::plugin('bnomei/doctor', [
                     $result = null;
                     $tbefore = time();
                     $tafter = time();
-                    if ($job == 'check') {
+                    if ($job === 'check') {
                         $result = \Bnomei\Doctor::check();
                         $tafter = time();
                     }
@@ -56,13 +56,13 @@ Kirby::plugin('bnomei/doctor', [
                             'data' => $result,
                             'job' => $job,
                             'duration' => $tafter - $tbefore,
-                            'status' => 200
+                            'status' => 200,
                         ];
                     } else {
                         return ['status' => 404];
                     }
                 },
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ]);

@@ -1,20 +1,22 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Bnomei;
 
+use Bnomei\Interfaces\Doctor;
 use ZendDiagnostics\Check\CheckInterface;
-use ZendDiagnostics\Result\Success;
 use ZendDiagnostics\Result\Failure;
-use Bnomei\DoctorInterface;
-use PHPMailer\PHPMailer\Exception;
+use ZendDiagnostics\Result\Success;
 
-class CheckKirbySystem implements CheckInterface, DoctorInterface
+final class CheckKirbySystem implements CheckInterface, Doctor
 {
     public function check()
     {
         $system = new \Kirby\Cms\System(kirby());
         // https://github.com/k-next/kirby/blob/master/src/Cms/System.php#L58
         foreach ($system->status() as $key => $check) {
-            if (!$check) {
+            if (! $check) {
                 return new Failure('Kirby CMS build-in system check ['.$key.'] failed.');
             }
         }
