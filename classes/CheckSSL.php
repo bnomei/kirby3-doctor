@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bnomei;
 
 use Bnomei\Interfaces\Doctor;
+use Kirby\Http\Request;
 use ZendDiagnostics\Check\CheckInterface;
 use ZendDiagnostics\Result\Failure;
 use ZendDiagnostics\Result\Success;
@@ -14,7 +15,7 @@ final class CheckSSL implements CheckInterface, Doctor
     public function check()
     {
         $url = kirby()->site()->url();
-        $request = new \Kirby\Http\Request([
+        $request = new Request([
             'url' => $url,
         ]);
 

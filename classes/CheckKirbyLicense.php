@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bnomei;
 
 use Bnomei\Interfaces\Doctor;
+use Kirby\Cms\System;
 use ZendDiagnostics\Check\CheckInterface;
 use ZendDiagnostics\Result\Failure;
 use ZendDiagnostics\Result\Success;
@@ -17,7 +18,7 @@ final class CheckKirbyLicense implements CheckInterface, Doctor
             return new Success('Valid license not required on localhost.');
         }
 
-        $system = new \Kirby\Cms\System(kirby());
+        $system = new System(kirby());
         $license = $system->license();
 
         if ($license !== false) {

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Bnomei;
 
 use Bnomei\Interfaces\Doctor;
+use Kirby\Toolkit\Dir;
+use Kirby\Toolkit\F;
+use SensioLabs\Security\SecurityChecker;
 use ZendDiagnostics\Check\CheckInterface;
 use ZendDiagnostics\Result\Failure;
 use ZendDiagnostics\Result\Success;
@@ -15,13 +18,13 @@ final class CheckComposerSecurity implements CheckInterface, Doctor
     {
         $hasNoWarnings = null;
         $composerLock = \Bnomei\Doctor::findComposerLockFile();
-        $hasComposerLock = $composerLock ? \Kirby\Toolkit\F::exists($composerLock) : false;
+        $hasComposerLock = $composerLock ? F::exists($composerLock) : false;
         $vendorFolder = $composerLock ? realpath(dirname($composerLock).'/vendor') : '';
-        $hasVendorFolder = \Kirby\Toolkit\Dir::isReadable($vendorFolder) &&
-            ! \Kirby\Toolkit\Dir::isEmpty($vendorFolder);
+        $hasVendorFolder = Dir::isReadable($vendorFolder) &&
+            ! Dir::isEmpty($vendorFolder);
 
         if ($hasComposerLock && $hasVendorFolder) {
-            $checker = new \SensioLabs\Security\SecurityChecker();
+            $checker = new SecurityChecker();
             $result = $checker->check($composerLock, 'json');
             $json = json_decode((string) $result, true);
             $hasNoWarnings = count($json) === 0;

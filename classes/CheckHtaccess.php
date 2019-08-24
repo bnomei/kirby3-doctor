@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bnomei;
 
 use Bnomei\Interfaces\Doctor;
+use Kirby\Toolkit\F;
 use ZendDiagnostics\Check\CheckInterface;
 use ZendDiagnostics\Result\Failure;
 use ZendDiagnostics\Result\Success;
@@ -13,7 +14,7 @@ final class CheckHtaccess implements CheckInterface, Doctor
 {
     public function check()
     {
-        $hasHtaccessFile = \Kirby\Toolkit\F::exists(
+        $hasHtaccessFile = F::exists(
             kirby()->roots()->index().'/.htaccess'
         );
 

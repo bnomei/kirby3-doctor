@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bnomei;
 
 use Bnomei\Interfaces\Doctor;
+use Kirby\Toolkit\Dir;
 use ZendDiagnostics\Check\CheckInterface;
 use ZendDiagnostics\Result\Failure;
 use ZendDiagnostics\Result\Success;
@@ -13,7 +14,7 @@ final class CheckGitFolder implements CheckInterface, Doctor
 {
     public function check()
     {
-        $hasNoPublicGitFolder = \Kirby\Toolkit\Dir::isEmpty(
+        $hasNoPublicGitFolder = Dir::isEmpty(
             kirby()->roots()->index().'/.git'
         );
 

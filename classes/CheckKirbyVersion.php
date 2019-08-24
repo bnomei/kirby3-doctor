@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Bnomei;
 
 use Bnomei\Interfaces\Doctor;
+use Exception;
+use Kirby\Http\Remote;
 use ZendDiagnostics\Check\CheckInterface;
 use ZendDiagnostics\Result\Failure;
 use ZendDiagnostics\Result\Success;
@@ -18,7 +20,7 @@ final class CheckKirbyVersion implements CheckInterface, Doctor
 
         try {
             $url = option('bnomei.doctor.checkkirbyversion.url', 'https://repo.packagist.org/p/getkirby/cms.json');
-            $request = \Kirby\Http\Remote::get($url);
+            $request = Remote::get($url);
             $json = $request ? json_decode($request->content(), true)['packages']['getkirby/cms'] : null;
 
             $versions = [];
@@ -29,7 +31,7 @@ final class CheckKirbyVersion implements CheckInterface, Doctor
             }
             $remoteVersion = count($versions) > 0 ? $versions[count($versions) - 1] : null;
             // @codeCoverageIgnoreStart
-        } catch (\Exception $exc) {
+        } catch (Exception $exc) {
             return new Failure($exc->getMessage());
         }
         // @codeCoverageIgnoreEnd

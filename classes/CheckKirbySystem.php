@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bnomei;
 
 use Bnomei\Interfaces\Doctor;
+use Kirby\Cms\System;
 use ZendDiagnostics\Check\CheckInterface;
 use ZendDiagnostics\Result\Failure;
 use ZendDiagnostics\Result\Success;
@@ -13,7 +14,7 @@ final class CheckKirbySystem implements CheckInterface, Doctor
 {
     public function check()
     {
-        $system = new \Kirby\Cms\System(kirby());
+        $system = new System(kirby());
         // https://github.com/k-next/kirby/blob/master/src/Cms/System.php#L58
         foreach ($system->status() as $key => $check) {
             if (! $check) {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bnomei;
 
 use Bnomei\Interfaces\Doctor;
+use Kirby\Toolkit\Dir;
 use ZendDiagnostics\Check\CheckInterface;
 use ZendDiagnostics\Result\Failure;
 use ZendDiagnostics\Result\Success;
@@ -14,8 +15,8 @@ final class CheckKirbyMediaSize implements CheckInterface, Doctor
     public function check()
     {
         $factor = option('bnomei.doctor.checkkirbymediasize.factor', 2);
-        $cacheSize = \Kirby\Toolkit\Dir::size(kirby()->roots()->cache());
-        $contentSize = \Kirby\Toolkit\Dir::size(kirby()->roots()->content());
+        $cacheSize = Dir::size(kirby()->roots()->cache());
+        $contentSize = Dir::size(kirby()->roots()->content());
 
         if (floatval($cacheSize) < floatval($contentSize) * floatval($factor)) {
             return new Success('Media-Folder is not exceeding set limit of '.$factor.'x size of content.');

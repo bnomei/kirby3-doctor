@@ -9,7 +9,9 @@ namespace Bnomei;
 use ArrayObject;
 use ZendDiagnostics\Check\CheckInterface as Check;
 use ZendDiagnostics\Result\Collection as ResultCollection;
+use ZendDiagnostics\Result\FailureInterface;
 use ZendDiagnostics\Result\ResultInterface as Result;
+use ZendDiagnostics\Result\WarningInterface;
 use ZendDiagnostics\Runner\Reporter\ReporterInterface;
 
 final class DoctorReporter implements ReporterInterface
@@ -37,12 +39,12 @@ final class DoctorReporter implements ReporterInterface
     {
         // in case this method returns false, the runner will abort checking.
         $level = 'info';
-        if ($result instanceof \ZendDiagnostics\Result\WarningInterface) {
+        if ($result instanceof WarningInterface) {
             $level = 'warning';
-        } elseif ($result instanceof \ZendDiagnostics\Result\FailureInterface) {
+        } elseif ($result instanceof FailureInterface) {
             $level = 'error';
         }
-        \Bnomei\Doctor::log(get_class($check) . ': ' . $result->getMessage(), $level);
+        Doctor::log(get_class($check) . ': ' . $result->getMessage(), $level);
     }
 
     /**

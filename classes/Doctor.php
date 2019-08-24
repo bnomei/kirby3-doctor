@@ -4,10 +4,22 @@ declare(strict_types=1);
 
 namespace Bnomei;
 
+use Kirby\Cache\Cache;
+use Kirby\Toolkit\F;
+use ZendDiagnostics\Check\DirReadable;
+use ZendDiagnostics\Check\DirWritable;
+use ZendDiagnostics\Check\ExtensionLoaded;
+use ZendDiagnostics\Check\PhpVersion;
+use ZendDiagnostics\Result\FailureInterface;
+use ZendDiagnostics\Result\SkipInterface;
+use ZendDiagnostics\Result\WarningInterface;
+use ZendDiagnostics\Runner\Reporter\BasicConsole;
+use ZendDiagnostics\Runner\Runner;
+
 final class Doctor
 {
     private static $cache = null;
-    private static function cache(): \Kirby\Cache\Cache
+    private static function cache(): Cache
     {
         if (! self::$cache) {
             self::$cache = kirby()->cache('bnomei.doctor');
@@ -53,19 +65,19 @@ final class Doctor
         return $validChecks;
     }
 
-    private static function runner(): \ZendDiagnostics\Runner\Runner
+    private static function runner(): Runner
     {
-        $runner = new \ZendDiagnostics\Runner\Runner();
+        $runner = new Runner();
 
-        $runner->addCheck(new \ZendDiagnostics\Check\PhpVersion('7.2', '>'));
-        $runner->addCheck(new \ZendDiagnostics\Check\ExtensionLoaded([
+        $runner->addCheck(new PhpVersion('7.2', '>'));
+        $runner->addCheck(new ExtensionLoaded([
             'mbstring',
             'curl',
             'gd',
         ]));
 
         if (function_exists('kirby')) {
-            $checkReadable = new \ZendDiagnostics\Check\DirReadable([
+            $checkReadable = new DirReadable([
                 kirby()->roots()->assets(),
                 kirby()->roots()->blueprints(),
                 // kirby()->roots()->collections(),
@@ -84,7 +96,7 @@ final class Doctor
             ]);
             $runner->addCheck($checkReadable);
 
-            $checkWriteable = new \ZendDiagnostics\Check\DirWritable([
+            $checkWriteable = new DirWritable([
                 kirby()->roots()->accounts(),
                 kirby()->roots()->cache(),
                 kirby()->roots()->media(),
@@ -103,7 +115,7 @@ final class Doctor
     public static function cli(): int
     {
         $runner = self::runner();
-        $runner->addReporter(new \ZendDiagnostics\Runner\Reporter\BasicConsole(80, true));
+        $runner->addReporter(new BasicConsole(80, true));
         $results = $runner->run();
         return ($results->getFailureCount() + $results->getWarningCount()) > 0 ? 1 : 0;
     }
@@ -121,17 +133,17 @@ final class Doctor
         }
 
         $runner = self::runner();
-        $runner->addReporter(new \Bnomei\DoctorReporter());
+        $runner->addReporter(new DoctorReporter());
         $results = $runner->run();
         $checks = [];
         foreach ($results as $result) {
             $result = $results[$result];
             $rtype = 'Success';
-            if ($result instanceof \ZendDiagnostics\Result\SkipInterface) {
+            if ($result instanceof SkipInterface) {
                 $rtype = 'Skip';
-            } elseif ($result instanceof \ZendDiagnostics\Result\WarningInterface) {
+            } elseif ($result instanceof WarningInterface) {
                 $rtype = 'Warning';
-            } elseif ($result instanceof \ZendDiagnostics\Result\FailureInterface) {
+            } elseif ($result instanceof FailureInterface) {
                 $rtype = 'Failure';
             }
             $checks[] = [
@@ -166,7 +178,7 @@ final class Doctor
             realpath(kirby()->roots()->index() . '/../composer.lock'), // devkit
             realpath(kirby()->roots()->index() . option('bnomei.doctor.checkcomposerlocksecurity.path', '')),
         ] as $path) {
-            if (\Kirby\Toolkit\F::exists($path)) {
+            if (F::exists($path)) {
                 return $path;
             }
         }

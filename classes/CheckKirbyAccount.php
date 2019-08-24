@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bnomei;
 
 use Bnomei\Interfaces\Doctor;
+use Kirby\Toolkit\Dir;
 use ZendDiagnostics\Check\CheckInterface;
 use ZendDiagnostics\Result\Failure;
 use ZendDiagnostics\Result\Success;
@@ -13,7 +14,7 @@ final class CheckKirbyAccount implements CheckInterface, Doctor
 {
     public function check()
     {
-        $hasUsers = count(\Kirby\Toolkit\Dir::dirs(kirby()->roots()->accounts())) > 0;
+        $hasUsers = count(Dir::dirs(kirby()->roots()->accounts())) > 0;
 
         if ($hasUsers) {
             return new Success('At least one Kirby CMS user account found.');
