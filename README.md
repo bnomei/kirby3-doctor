@@ -92,24 +92,13 @@ Kirby::plugin('my/plugin', [        // your plugin
 
 ## Settings
 
-All settings have to be prefixed with `bnomei.doctor.`.
-
-**expire**
-- default: `24*60` minutes to cache the results and not run tests again
-
-**debugforce**
-- default: `true` will expire the cache every time if `option('debug')` is true as well.
-
-**checks**
-- default: `[]`
-- example: `["MyNamespace\\MyCheckClass" => true, "Bnomei\\CheckGitFolder" => false]`
-> Attention: Namespaces must use `\\`-notion.
-
-**log.enabled**
-- default: `true` will create a log file if [Kirby Log Plugin](https://github.com/bvdputte/kirby-log) is installed as well.
-
-**log**
-- default: callback to `kirbyLog()`
+| bnomei.doctor.           | Default        | Description               |            
+|--------------------------|----------------|---------------------------|
+| expire | `24*60` | minutes to cache the results and not run tests again |
+| debugforce | `true` | will expire the cache every time if `option('debug')` is true as well. |
+| checks | `[]` | example: `["MyNamespace\\MyCheckClass" => true, "Bnomei\\CheckGitFolder" => false]` Attention: Namespaces must use `\\`-notion. |
+| log.enabled | `true` | will create a log file if [Kirby Log Plugin](https://github.com/bvdputte/kirby-log) is installed as well. |
+| log | `callback` | to `kirbyLog()` |
 
 ## Credits
 
