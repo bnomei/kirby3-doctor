@@ -33,8 +33,6 @@ use Symfony\Component\Mime\Exception\LogicException;
  *     $guesser->registerGuesser(new FileinfoMimeTypeGuesser('/path/to/magic/file'));
  *
  * @author Fabien Potencier <fabien@symfony.com>
- *
- * @experimental in 4.3
  */
 final class MimeTypes implements MimeTypesInterface
 {
@@ -53,7 +51,7 @@ final class MimeTypes implements MimeTypesInterface
             $this->extensions[$mimeType] = $extensions;
 
             foreach ($extensions as $extension) {
-                $this->mimeTypes[$extension] = $mimeType;
+                $this->mimeTypes[$extension][] = $mimeType;
             }
         }
         $this->registerGuesser(new FileBinaryMimeTypeGuesser());
@@ -528,6 +526,7 @@ final class MimeTypes implements MimeTypesInterface
         'application/vnd.ms-ims' => ['ims'],
         'application/vnd.ms-lrm' => ['lrm'],
         'application/vnd.ms-officetheme' => ['thmx'],
+        'application/vnd.ms-outlook' => ['msg'],
         'application/vnd.ms-pki.seccat' => ['cat'],
         'application/vnd.ms-pki.stl' => ['stl'],
         'application/vnd.ms-powerpoint' => ['ppt', 'pps', 'pot', 'ppz'],
@@ -1253,6 +1252,7 @@ final class MimeTypes implements MimeTypesInterface
         'image/psd' => ['psd'],
         'image/rle' => ['rle'],
         'image/sgi' => ['sgi'],
+        'image/svg' => ['svg'],
         'image/svg+xml' => ['svg', 'svgz'],
         'image/svg+xml-compressed' => ['svgz'],
         'image/tiff' => ['tiff', 'tif'],
@@ -2375,6 +2375,7 @@ final class MimeTypes implements MimeTypesInterface
         'mseed' => ['application/vnd.fdsn.mseed'],
         'mseq' => ['application/vnd.mseq'],
         'msf' => ['application/vnd.epson.msf'],
+        'msg' => ['application/vnd.ms-outlook'],
         'msh' => ['model/mesh'],
         'msi' => ['application/x-msdownload', 'application/x-msi'],
         'msl' => ['application/vnd.mobius.msl'],
@@ -2433,12 +2434,12 @@ final class MimeTypes implements MimeTypesInterface
         'odc' => ['application/vnd.oasis.opendocument.chart'],
         'odf' => ['application/vnd.oasis.opendocument.formula'],
         'odft' => ['application/vnd.oasis.opendocument.formula-template'],
-        'odg' => ['vnd.oasis.opendocument.graphics', 'application/vnd.oasis.opendocument.graphics'],
+        'odg' => ['application/vnd.oasis.opendocument.graphics'],
         'odi' => ['application/vnd.oasis.opendocument.image'],
         'odm' => ['application/vnd.oasis.opendocument.text-master'],
-        'odp' => ['vnd.oasis.opendocument.presentation', 'application/vnd.oasis.opendocument.presentation'],
-        'ods' => ['vnd.oasis.opendocument.spreadsheet', 'application/vnd.oasis.opendocument.spreadsheet'],
-        'odt' => ['vnd.oasis.opendocument.text', 'application/vnd.oasis.opendocument.text'],
+        'odp' => ['application/vnd.oasis.opendocument.presentation'],
+        'ods' => ['application/vnd.oasis.opendocument.spreadsheet'],
+        'odt' => ['application/vnd.oasis.opendocument.text'],
         'oga' => ['audio/ogg', 'audio/vorbis', 'audio/x-flac+ogg', 'audio/x-ogg', 'audio/x-oggflac', 'audio/x-speex+ogg', 'audio/x-vorbis', 'audio/x-vorbis+ogg'],
         'ogg' => ['audio/ogg', 'audio/vorbis', 'audio/x-flac+ogg', 'audio/x-ogg', 'audio/x-oggflac', 'audio/x-speex+ogg', 'audio/x-vorbis', 'audio/x-vorbis+ogg', 'video/ogg', 'video/x-ogg', 'video/x-theora', 'video/x-theora+ogg'],
         'ogm' => ['video/x-ogm', 'video/x-ogm+ogg'],
@@ -2810,7 +2811,7 @@ final class MimeTypes implements MimeTypesInterface
         'sv4crc' => ['application/x-sv4crc'],
         'svc' => ['application/vnd.dvb.service'],
         'svd' => ['application/vnd.svd'],
-        'svg' => ['image/svg+xml'],
+        'svg' => ['image/svg+xml', 'image/svg'],
         'svgz' => ['image/svg+xml', 'image/svg+xml-compressed'],
         'svh' => ['text/x-svhdr'],
         'swa' => ['application/x-director'],

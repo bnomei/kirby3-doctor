@@ -15,8 +15,6 @@ use Symfony\Component\Mime\Encoder\Rfc2231Encoder;
 
 /**
  * @author Chris Corbyn
- *
- * @experimental in 4.3
  */
 final class ParameterizedHeader extends UnstructuredHeader
 {
@@ -38,7 +36,7 @@ final class ParameterizedHeader extends UnstructuredHeader
             $this->setParameter($k, $v);
         }
 
-        if ('content-disposition' === strtolower($name)) {
+        if ('content-type' !== strtolower($name)) {
             $this->encoder = new Rfc2231Encoder();
         }
     }
