@@ -159,7 +159,7 @@ final class Doctor
 
     public static function log(string $msg = '', string $level = 'info', array $context = []): bool
     {
-        $log = option('bnomei.doctor.log');
+        $log = option('bnomei.doctor.log.fn');
         if ($log && is_callable($log)) {
             if (! option('debug') && $level === 'debug') {
                 // skip but...

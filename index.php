@@ -10,7 +10,7 @@ Kirby::plugin('bnomei/doctor', [
         'label.cooldown' => 2000,
         'checks' => [],
         'log.enabled' => true,
-        'log' => function (string $msg, string $level = 'info', array $context = []): bool {
+        'log.fn' => function (string $msg, string $level = 'info', array $context = []): bool {
             if (option('bnomei.doctor.log.enabled') && function_exists('kirbyLog')) {
                 kirbyLog('bnomei.doctor.log')->log($msg, $level, $context);
                 return true;
