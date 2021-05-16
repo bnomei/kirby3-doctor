@@ -23,18 +23,18 @@ final class NativeClientState extends ClientState
     /** @var int */
     public $id;
     /** @var int */
-    public $maxHostConnections = PHP_INT_MAX;
+    public $maxHostConnections = \PHP_INT_MAX;
     /** @var int */
     public $responseCount = 0;
     /** @var string[] */
     public $dnsCache = [];
-    /** @var resource[] */
-    public $handles = [];
     /** @var bool */
     public $sleep = false;
+    /** @var int[] */
+    public $hosts = [];
 
     public function __construct()
     {
-        $this->id = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        $this->id = random_int(\PHP_INT_MIN, \PHP_INT_MAX);
     }
 }

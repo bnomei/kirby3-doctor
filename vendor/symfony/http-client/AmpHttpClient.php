@@ -82,6 +82,15 @@ final class AmpHttpClient implements HttpClientInterface, LoggerAwareInterface, 
             throw new \LogicException('You cannot use the "proxy" option as the "amphp/http-tunnel" package is not installed. Try running "composer require amphp/http-tunnel".');
         }
 
+        if ($options['bindto']) {
+            if (0 === strpos($options['bindto'], 'if!')) {
+                throw new TransportException(__CLASS__.' cannot bind to network interfaces, use e.g. CurlHttpClient instead.');
+            }
+            if (0 === strpos($options['bindto'], 'host!')) {
+                $options['bindto'] = substr($options['bindto'], 5);
+            }
+        }
+
         if ('' !== $options['body'] && 'POST' === $method && !isset($options['normalized_headers']['content-type'])) {
             $options['headers'][] = 'Content-Type: application/x-www-form-urlencoded';
         }
@@ -120,6 +129,9 @@ final class AmpHttpClient implements HttpClientInterface, LoggerAwareInterface, 
         $request->setTcpConnectTimeout(1000 * $options['timeout']);
         $request->setTlsHandshakeTimeout(1000 * $options['timeout']);
         $request->setTransferTimeout(1000 * $options['max_duration']);
+        if (method_exists($request, 'setInactivityTimeout')) {
+            $request->setInactivityTimeout(0);
+        }
 
         if ('' !== $request->getUri()->getUserInfo() && !$request->hasHeader('authorization')) {
             $auth = explode(':', $request->getUri()->getUserInfo(), 2);
@@ -138,7 +150,7 @@ final class AmpHttpClient implements HttpClientInterface, LoggerAwareInterface, 
         if ($responses instanceof AmpResponse) {
             $responses = [$responses];
         } elseif (!is_iterable($responses)) {
-            throw new \TypeError(sprintf('%s() expects parameter 1 to be an iterable of AmpResponse objects, %s given.', __METHOD__, get_debug_type($responses)));
+            throw new \TypeError(sprintf('"%s()" expects parameter 1 to be an iterable of AmpResponse objects, "%s" given.', __METHOD__, get_debug_type($responses)));
         }
 
         return new ResponseStream(AmpResponse::stream($responses, $timeout));

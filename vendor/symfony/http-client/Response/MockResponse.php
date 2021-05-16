@@ -23,14 +23,17 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class MockResponse implements ResponseInterface
+class MockResponse implements ResponseInterface, StreamableInterface
 {
-    use ResponseTrait {
+    use CommonResponseTrait;
+    use TransportResponseTrait {
         doDestruct as public __destruct;
     }
 
     private $body;
     private $requestOptions = [];
+    private $requestUrl;
+    private $requestMethod;
 
     private static $mainMulti;
     private static $idSequence = 0;
@@ -69,6 +72,22 @@ class MockResponse implements ResponseInterface
     public function getRequestOptions(): array
     {
         return $this->requestOptions;
+    }
+
+    /**
+     * Returns the URL used when doing the request.
+     */
+    public function getRequestUrl(): string
+    {
+        return $this->requestUrl;
+    }
+
+    /**
+     * Returns the method used when doing the request.
+     */
+    public function getRequestMethod(): string
+    {
+        return $this->requestMethod;
     }
 
     /**
@@ -121,6 +140,8 @@ class MockResponse implements ResponseInterface
 
         if ($mock instanceof self) {
             $mock->requestOptions = $response->requestOptions;
+            $mock->requestMethod = $method;
+            $mock->requestUrl = $url;
         }
 
         self::writeRequest($response, $options, $mock);
@@ -211,8 +232,8 @@ class MockResponse implements ResponseInterface
             $response->info['size_upload'] = 0.0;
         }
 
-        // simulate "total_time" if it is set
-        if (isset($response->info['total_time'])) {
+        // simulate "total_time" if it is not set
+        if (!isset($response->info['total_time'])) {
             $response->info['total_time'] = microtime(true) - $response->info['start_time'];
         }
 
@@ -260,7 +281,7 @@ class MockResponse implements ResponseInterface
             'http_code' => $response->info['http_code'],
         ] + $info + $response->info;
 
-        if (isset($response->info['total_time'])) {
+        if (!isset($response->info['total_time'])) {
             $response->info['total_time'] = microtime(true) - $response->info['start_time'];
         }
 
@@ -287,7 +308,7 @@ class MockResponse implements ResponseInterface
             $offset = \strlen($body);
         }
 
-        if (isset($response->info['total_time'])) {
+        if (!isset($response->info['total_time'])) {
             $response->info['total_time'] = microtime(true) - $response->info['start_time'];
         }
 
