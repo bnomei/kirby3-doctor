@@ -272,7 +272,7 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
         if ($options['bindto']) {
             if (file_exists($options['bindto'])) {
                 $curlopts[\CURLOPT_UNIX_SOCKET_PATH] = $options['bindto'];
-            } elseif (0 !== strpos($options['bindto'], 'if!') && preg_match('/^(.*):(\d+)$/', $options['bindto'], $matches)) {
+            } elseif (!str_starts_with($options['bindto'], 'if!') && preg_match('/^(.*):(\d+)$/', $options['bindto'], $matches)) {
                 $curlopts[\CURLOPT_INTERFACE] = $matches[1];
                 $curlopts[\CURLOPT_LOCALPORT] = $matches[2];
             } else {
@@ -311,7 +311,7 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
         }
 
         foreach ($curlopts as $opt => $value) {
-            if (null !== $value && !curl_setopt($ch, $opt, $value) && \CURLOPT_CERTINFO !== $opt) {
+            if (null !== $value && !curl_setopt($ch, $opt, $value) && \CURLOPT_CERTINFO !== $opt && (!\defined('CURLOPT_HEADEROPT') || \CURLOPT_HEADEROPT !== $opt)) {
                 $constantName = $this->findConstantName($opt);
                 throw new TransportException(sprintf('Curl option "%s" is not supported.', $constantName ?? $opt));
             }
@@ -341,32 +341,13 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
 
     public function reset()
     {
-        if ($this->logger) {
-            foreach ($this->multi->pushedResponses as $url => $response) {
-                $this->logger->debug(sprintf('Unused pushed response: "%s"', $url));
-            }
-        }
-
-        $this->multi->pushedResponses = [];
-        $this->multi->dnsCache->evictions = $this->multi->dnsCache->evictions ?: $this->multi->dnsCache->removals;
-        $this->multi->dnsCache->removals = $this->multi->dnsCache->hostnames = [];
-
-        if (\is_resource($this->multi->handle) || $this->multi->handle instanceof \CurlMultiHandle) {
-            if (\defined('CURLMOPT_PUSHFUNCTION')) {
-                curl_multi_setopt($this->multi->handle, \CURLMOPT_PUSHFUNCTION, null);
-            }
-
-            $active = 0;
-            while (\CURLM_CALL_MULTI_PERFORM === curl_multi_exec($this->multi->handle, $active));
-        }
-
-        foreach ($this->multi->openHandles as [$ch]) {
-            if (\is_resource($ch) || $ch instanceof \CurlHandle) {
-                curl_setopt($ch, \CURLOPT_VERBOSE, false);
-            }
-        }
+        $this->multi->logger = $this->logger;
+        $this->multi->reset();
     }
 
+    /**
+     * @return array
+     */
     public function __sleep()
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
@@ -379,7 +360,7 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
 
     public function __destruct()
     {
-        $this->reset();
+        $this->multi->logger = $this->logger;
     }
 
     private function handlePush($parent, $pushed, array $requestHeaders, int $maxPendingPushes): int
@@ -404,7 +385,7 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
         // curl before 7.65 doesn't validate the pushed ":authority" header,
         // but this is a MUST in the HTTP/2 RFC; let's restrict pushes to the original host,
         // ignoring domains mentioned as alt-name in the certificate for now (same as curl).
-        if (0 !== strpos($origin, $url.'/')) {
+        if (!str_starts_with($origin, $url.'/')) {
             $this->logger && $this->logger->debug(sprintf('Rejecting pushed response from "%s": server is not authoritative for "%s"', $origin, $url));
 
             return \CURL_PUSH_DENY;
@@ -512,10 +493,10 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
         };
     }
 
-    private function findConstantName($opt): ?string
+    private function findConstantName(int $opt): ?string
     {
         $constants = array_filter(get_defined_constants(), static function ($v, $k) use ($opt) {
-            return $v === $opt && 'C' === $k[0] && (0 === strpos($k, 'CURLOPT_') || 0 === strpos($k, 'CURLINFO_'));
+            return $v === $opt && 'C' === $k[0] && (str_starts_with($k, 'CURLOPT_') || str_starts_with($k, 'CURLINFO_'));
         }, \ARRAY_FILTER_USE_BOTH);
 
         return key($constants);
@@ -574,7 +555,6 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
             \CURLOPT_HEADER,
             \CURLOPT_CONNECTTIMEOUT,
             \CURLOPT_CONNECTTIMEOUT_MS,
-            \CURLOPT_HEADEROPT,
             \CURLOPT_HTTP_VERSION,
             \CURLOPT_PORT,
             \CURLOPT_DNS_USE_GLOBAL_CACHE,
@@ -586,6 +566,10 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
 
         if (\defined('CURLOPT_HTTP09_ALLOWED')) {
             $curloptsToCheck[] = \CURLOPT_HTTP09_ALLOWED;
+        }
+
+        if (\defined('CURLOPT_HEADEROPT')) {
+            $curloptsToCheck[] = \CURLOPT_HEADEROPT;
         }
 
         $methodOpts = [

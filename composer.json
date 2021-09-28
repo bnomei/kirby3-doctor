@@ -1,7 +1,7 @@
 {
     "name": "bnomei/kirby3-doctor",
     "type": "kirby-plugin",
-    "version": "1.4.6",
+    "version": "1.4.7",
     "description": "Kirby 3 Plugin to check health of your CMS installation.",
     "license": "MIT",
     "authors": [

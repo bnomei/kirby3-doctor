@@ -31,12 +31,15 @@ final class AsyncResponse implements ResponseInterface, StreamableInterface
 {
     use CommonResponseTrait;
 
+    private const FIRST_CHUNK_YIELDED = 1;
+    private const LAST_CHUNK_YIELDED = 2;
+
     private $client;
     private $response;
     private $info = ['canceled' => false];
     private $passthru;
     private $stream;
-    private $lastYielded = false;
+    private $yieldedState;
 
     /**
      * @param ?callable(ChunkInterface, AsyncContext): ?\Iterator $passthru
@@ -54,13 +57,13 @@ final class AsyncResponse implements ResponseInterface, StreamableInterface
         }
         $this->response = $client->request($method, $url, ['buffer' => false] + $options);
         $this->passthru = $passthru;
-        $this->initializer = static function (self $response) {
+        $this->initializer = static function (self $response, float $timeout = null) {
             if (null === $response->shouldBuffer) {
                 return false;
             }
 
             while (true) {
-                foreach (self::stream([$response]) as $chunk) {
+                foreach (self::stream([$response], $timeout) as $chunk) {
                     if ($chunk->isTimeout() && $response->passthru) {
                         foreach (self::passthru($response->client, $response, new ErrorChunk($response->offset, new TransportException($chunk->getError()))) as $chunk) {
                             if ($chunk->isFirst()) {
@@ -176,6 +179,7 @@ final class AsyncResponse implements ResponseInterface, StreamableInterface
 
         if ($this->initializer && null === $this->getInfo('error')) {
             try {
+                self::initialize($this, -0.0);
                 $this->getHeaders(true);
             } catch (HttpExceptionInterface $httpException) {
                 // no-op
@@ -272,6 +276,14 @@ final class AsyncResponse implements ResponseInterface, StreamableInterface
                     continue;
                 }
 
+                if (null !== $chunk->getError()) {
+                    // no-op
+                } elseif ($chunk->isFirst()) {
+                    $r->yieldedState = self::FIRST_CHUNK_YIELDED;
+                } elseif (self::FIRST_CHUNK_YIELDED !== $r->yieldedState && null === $chunk->getInformationalStatus()) {
+                    throw new \LogicException(sprintf('Instance of "%s" is already consumed and cannot be managed by "%s". A decorated client should not call any of the response\'s methods in its "request()" method.', get_debug_type($response), $class ?? static::class));
+                }
+
                 foreach (self::passthru($r->client, $r, $chunk, $asyncMap) as $chunk) {
                     yield $r => $chunk;
                 }
@@ -282,9 +294,9 @@ final class AsyncResponse implements ResponseInterface, StreamableInterface
             }
 
             if (null === $chunk->getError() && $chunk->isLast()) {
-                $r->lastYielded = true;
+                $r->yieldedState = self::LAST_CHUNK_YIELDED;
             }
-            if (null === $chunk->getError() && !$r->lastYielded && $r->response === $response && null !== $r->client) {
+            if (null === $chunk->getError() && self::LAST_CHUNK_YIELDED !== $r->yieldedState && $r->response === $response && null !== $r->client) {
                 throw new \LogicException('A chunk passthru must yield an "isLast()" chunk before ending a stream.');
             }
 

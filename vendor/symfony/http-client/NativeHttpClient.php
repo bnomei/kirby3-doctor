@@ -71,10 +71,10 @@ final class NativeHttpClient implements HttpClientInterface, LoggerAwareInterfac
             if (file_exists($options['bindto'])) {
                 throw new TransportException(__CLASS__.' cannot bind to local Unix sockets, use e.g. CurlHttpClient instead.');
             }
-            if (0 === strpos($options['bindto'], 'if!')) {
+            if (str_starts_with($options['bindto'], 'if!')) {
                 throw new TransportException(__CLASS__.' cannot bind to network interfaces, use e.g. CurlHttpClient instead.');
             }
-            if (0 === strpos($options['bindto'], 'host!')) {
+            if (str_starts_with($options['bindto'], 'host!')) {
                 $options['bindto'] = substr($options['bindto'], 5);
             }
         }
@@ -187,6 +187,11 @@ final class NativeHttpClient implements HttpClientInterface, LoggerAwareInterfac
             $options['timeout'] = min($options['max_duration'], $options['timeout']);
         }
 
+        $bindto = $options['bindto'];
+        if (!$bindto && (70322 === \PHP_VERSION_ID || 70410 === \PHP_VERSION_ID)) {
+            $bindto = '0:0';
+        }
+
         $context = [
             'http' => [
                 'protocol_version' => min($options['http_version'] ?: '1.1', '1.1'),
@@ -215,7 +220,7 @@ final class NativeHttpClient implements HttpClientInterface, LoggerAwareInterfac
                 'disable_compression' => true,
             ], static function ($v) { return null !== $v; }),
             'socket' => [
-                'bindto' => $options['bindto'] ?: '0:0',
+                'bindto' => $bindto,
                 'tcp_nodelay' => true,
             ],
         ];
@@ -418,7 +423,7 @@ final class NativeHttpClient implements HttpClientInterface, LoggerAwareInterfac
         foreach ($proxy['no_proxy'] as $rule) {
             $dotRule = '.'.ltrim($rule, '.');
 
-            if ('*' === $rule || $host === $rule || substr($host, -\strlen($dotRule)) === $dotRule) {
+            if ('*' === $rule || $host === $rule || str_ends_with($host, $dotRule)) {
                 stream_context_set_option($context, 'http', 'proxy', null);
                 stream_context_set_option($context, 'http', 'request_fulluri', false);
                 stream_context_set_option($context, 'http', 'header', $requestHeaders);
