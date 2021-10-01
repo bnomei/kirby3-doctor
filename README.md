@@ -9,7 +9,7 @@
 
 Plugin to check health of your CMS installation
 
-## Commerical Usage
+## Commercial Usage
 
 > <br>
 > <b>Support open source!</b><br><br>
