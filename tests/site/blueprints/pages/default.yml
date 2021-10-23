@@ -1,0 +1,7 @@
+title: Default Page
+preset: page
+fields:
+
+  doctor:
+    type: doctor
+    label: Perform checks

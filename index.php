@@ -65,4 +65,28 @@ Kirby::plugin('bnomei/doctor', [
             ],
         ],
     ],
+    'areas' => [
+        'doctor' => function ($kirby) {
+            return [
+                'label' => 'Doctor',
+                'icon' => 'bug',
+                'breadcrumbLabel' => function () {
+                  return 'Doctor - Keep Kirby healthy !';
+                },
+                'menu' => true,
+                'link' => 'doctor',
+                'views' => [
+                  [
+                    'pattern' => 'doctor',
+                    'action'  => function () use ($kirby)  {
+                      return [
+                        'component' => 'doctor-view',
+                        'title' => 'Kirby Doctor'
+                      ];
+                    }
+                  ]
+                ]
+            ];
+        },
+    ],
 ]);

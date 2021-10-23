@@ -4,7 +4,7 @@
 ![Downloads](https://flat.badgen.net/packagist/dt/bnomei/kirby3-doctor?color=272822)
 [![Build Status](https://flat.badgen.net/travis/bnomei/kirby3-doctor)](https://travis-ci.com/bnomei/kirby3-doctor)
 [![Coverage Status](https://flat.badgen.net/coveralls/c/github/bnomei/kirby3-doctor)](https://coveralls.io/github/bnomei/kirby3-doctor) 
-[![Maintainability](https://flat.badgen.net/codeclimate/maintainability/bnomei/kirby3-doctor)](https://codeclimate.com/github/bnomei/kirby3-doctor)  
+[![Maintainability](https://flat.badgen.net/codeclimate/maintainability/bnomei/kirby3-doctor)](https://codeclimate.com/github/bnomei/kirby3-doctor)
 [![Twitter](https://flat.badgen.net/badge/twitter/bnomei?color=66d9ef)](https://twitter.com/bnomei)
 
 Plugin to check health of your CMS installation
@@ -34,6 +34,9 @@ Plugin to check health of your CMS installation
 ![doctor](https://raw.githubusercontent.com/bnomei/kirby3-doctor/master/kirby3-doctor-screenshot-1.gif)
 
 ## Usage Kirby Panel
+
+This plugin will register a Panel Area "Doctor". Many thanks to @Daandelange for PRing this feature.
+Alternatively you could also add the button to perform the checks on any other view.
 
 ```
 fields:
