@@ -10,6 +10,7 @@ use Kirby\Toolkit\F;
 use SensioLabs\Security\SecurityChecker;
 use ZendDiagnostics\Check\CheckInterface;
 use ZendDiagnostics\Result\Failure;
+use ZendDiagnostics\Result\Skip;
 use ZendDiagnostics\Result\Success;
 
 final class CheckComposerSecurity implements CheckInterface, Doctor
@@ -29,9 +30,13 @@ final class CheckComposerSecurity implements CheckInterface, Doctor
             $json = json_decode((string) $result, true);
             $hasNoWarnings = count($json) === 0;
         }
-
-        if ($hasNoWarnings) {
-            return new Success('No known vulnerabilities of packages were found in composer.lock file.');
+        
+        // Fix : if kirby hasn't got a composer installation, don't display a composer error.
+        if( $hasNoWarnings === null ){
+          return new Skip('Your Kirby installation doesn\'t use composer, ignoring composer vulnerabilities check.');
+        }
+        elseif ($hasNoWarnings) {
+          return new Success('No known vulnerabilities of packages were found in composer.lock file.');
         }
 
         return new Failure('One or more vulnerabilities of packages were found in composer.lock file.');
