@@ -33,14 +33,14 @@ final class CheckKirbyVersion implements CheckInterface, Doctor
             $remoteVersion = count($versions) > 0 ? $versions[count($versions) - 1] : null;
             // @codeCoverageIgnoreStart
         } catch (Exception $exc) {
-	        switch( $exc->getCode() ){
-		        case CURLE_COULDNT_RESOLVE_HOST :
-		        case CURLE_COULDNT_CONNECT :
-		        		return new Skip('Network error, could not check your Kirby CMS version.');
-		        		break;
-		        	default: 
-							return new Failure('Could not check your Kirby CMS version : '.$exc->getMessage());
-					}
+          switch( $exc->getCode() ){
+            case CURLE_COULDNT_RESOLVE_HOST :
+            case CURLE_COULDNT_CONNECT :
+                return new Skip('Network error, could not check your Kirby CMS version.');
+                break;
+              default: 
+              return new Failure('Could not check your Kirby CMS version : '.$exc->getMessage());
+          }
         }
         // @codeCoverageIgnoreEnd
 
