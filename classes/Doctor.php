@@ -178,7 +178,7 @@ final class Doctor
             realpath(kirby()->roots()->index() . '/../composer.lock'), // devkit
             realpath(kirby()->roots()->index() . option('bnomei.doctor.checkcomposerlocksecurity.path', '')),
         ] as $path) {
-            if (F::exists($path)) {
+            if ($path && F::exists($path)) {
                 return $path;
             }
         }
