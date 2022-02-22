@@ -3,7 +3,7 @@
 ![Release](https://flat.badgen.net/packagist/v/bnomei/kirby3-doctor?color=ae81ff)
 ![Downloads](https://flat.badgen.net/packagist/dt/bnomei/kirby3-doctor?color=272822)
 [![Build Status](https://flat.badgen.net/travis/bnomei/kirby3-doctor)](https://travis-ci.com/bnomei/kirby3-doctor)
-[![Coverage Status](https://flat.badgen.net/coveralls/c/github/bnomei/kirby3-doctor)](https://coveralls.io/github/bnomei/kirby3-doctor) 
+[![Coverage Status](https://flat.badgen.net/coveralls/c/github/bnomei/kirby3-doctor)](https://coveralls.io/github/bnomei/kirby3-doctor)
 [![Maintainability](https://flat.badgen.net/codeclimate/maintainability/bnomei/kirby3-doctor)](https://codeclimate.com/github/bnomei/kirby3-doctor)
 [![Twitter](https://flat.badgen.net/badge/twitter/bnomei?color=66d9ef)](https://twitter.com/bnomei)
 
@@ -17,7 +17,7 @@ Plugin to check health of your CMS installation
 > If my work helped you to make some cash it seems fair to me that I might get a little reward as well, right?<br><br>
 > Be kind. Share a little. Thanks.<br><br>
 > &dash; Bruno<br>
-> &nbsp; 
+> &nbsp;
 
 | M | O | N | E | Y |
 |---|----|---|---|---|
@@ -58,10 +58,9 @@ let doctor = fetch('https://kirby3-plugins.bnomei.com/api/plugin-doctor/check')
 
 ## Provided Checks
 
-- CheckPHPVersion (zendframework): Kirby installation requirements
-- CheckPHPExtension (zendframework): Kirby installation requirements
-- CheckKirbyFolders (zendframework): Read/Write-Access to core Kirby folders
-- CheckComposerSecurity: https://security.symfony.com/
+- CheckPHPVersion (laminas): Kirby installation requirements
+- CheckPHPExtension (laminas): Kirby installation requirements
+- CheckKirbyFolders (laminas): Read/Write-Access to core Kirby folders
 - CheckGitFolder: No public `.git` folder
 - CheckHtaccess: Has a `.htaccess` file
 - CheckKirbyAccount: Has at least one account
@@ -80,7 +79,7 @@ You can add custom checks or disable build checks using the `checks` setting in 
 return [
     'bnomei.doctor.checks' => [
         "MyNamespace\\MyClass" => true, // enable new
-        "Bnomei\\CheckComposerSecurity" => false, // disable build-in
+        "Bnomei\\CheckKirbyCacheSize" => false, // disable build-in
     ],
     // ...
 ];
@@ -99,7 +98,7 @@ Kirby::plugin('my/plugin', [        // your plugin
 
 ## Settings
 
-| bnomei.doctor.           | Default        | Description               |            
+| bnomei.doctor.           | Default        | Description               |
 |--------------------------|----------------|---------------------------|
 | expire | `24*60` | minutes to cache the results and not run tests again |
 | debugforce | `true` | will expire the cache every time if `option('debug')` is true as well. |
