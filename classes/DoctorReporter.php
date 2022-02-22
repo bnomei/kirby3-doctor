@@ -7,12 +7,12 @@ declare(strict_types=1);
 namespace Bnomei;
 
 use ArrayObject;
-use ZendDiagnostics\Check\CheckInterface as Check;
-use ZendDiagnostics\Result\Collection as ResultCollection;
-use ZendDiagnostics\Result\FailureInterface;
-use ZendDiagnostics\Result\ResultInterface as Result;
-use ZendDiagnostics\Result\WarningInterface;
-use ZendDiagnostics\Runner\Reporter\ReporterInterface;
+use Laminas\Diagnostics\Check\CheckInterface as Check;
+use Laminas\Diagnostics\Result\Collection as ResultCollection;
+use Laminas\Diagnostics\Result\FailureInterface;
+use Laminas\Diagnostics\Result\ResultInterface as Result;
+use Laminas\Diagnostics\Result\WarningInterface;
+use Laminas\Diagnostics\Runner\Reporter\ReporterInterface;
 
 final class DoctorReporter implements ReporterInterface
 {

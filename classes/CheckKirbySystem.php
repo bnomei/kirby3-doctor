@@ -6,9 +6,9 @@ namespace Bnomei;
 
 use Bnomei\Interfaces\Doctor;
 use Kirby\Cms\System;
-use ZendDiagnostics\Check\CheckInterface;
-use ZendDiagnostics\Result\Failure;
-use ZendDiagnostics\Result\Success;
+use Laminas\Diagnostics\Check\CheckInterface;
+use Laminas\Diagnostics\Result\Failure;
+use Laminas\Diagnostics\Result\Success;
 
 final class CheckKirbySystem implements CheckInterface, Doctor
 {

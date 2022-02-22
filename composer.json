@@ -1,7 +1,7 @@
 {
     "name": "bnomei/kirby3-doctor",
     "type": "kirby-plugin",
-    "version": "1.5.1",
+    "version": "2.0.0",
     "description": "Kirby 3 Plugin to check health of your CMS installation.",
     "license": "MIT",
     "authors": [
@@ -32,10 +32,9 @@
         "sort-packages": true
     },
     "require": {
-        "php": ">=7.3.0",
+        "php": ">=8.1.0",
         "getkirby/composer-installer": "^1.2",
-        "sensiolabs/security-checker": "^6.0",
-        "zendframework/zenddiagnostics": "^1.6"
+        "laminas/laminas-diagnostics": "^1.13"
     },
     "scripts": {
         "build": [

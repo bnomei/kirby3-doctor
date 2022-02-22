@@ -6,9 +6,9 @@ namespace Bnomei;
 
 use Bnomei\Interfaces\Doctor;
 use Kirby\Toolkit\Dir;
-use ZendDiagnostics\Check\CheckInterface;
-use ZendDiagnostics\Result\Failure;
-use ZendDiagnostics\Result\Success;
+use Laminas\Diagnostics\Check\CheckInterface;
+use Laminas\Diagnostics\Result\Failure;
+use Laminas\Diagnostics\Result\Success;
 
 final class CheckKirbyMediaSize implements CheckInterface, Doctor
 {

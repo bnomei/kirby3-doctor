@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Bnomei;
 
 use Kirby\Cache\Cache;
-use Kirby\Toolkit\F;
-use ZendDiagnostics\Check\DirReadable;
-use ZendDiagnostics\Check\DirWritable;
-use ZendDiagnostics\Check\ExtensionLoaded;
-use ZendDiagnostics\Check\PhpVersion;
-use ZendDiagnostics\Result\FailureInterface;
-use ZendDiagnostics\Result\SkipInterface;
-use ZendDiagnostics\Result\WarningInterface;
-use ZendDiagnostics\Runner\Reporter\BasicConsole;
-use ZendDiagnostics\Runner\Runner;
+use Kirby\Filesystem\F;
+use Laminas\Diagnostics\Check\DirReadable;
+use Laminas\Diagnostics\Check\DirWritable;
+use Laminas\Diagnostics\Check\ExtensionLoaded;
+use Laminas\Diagnostics\Check\PhpVersion;
+use Laminas\Diagnostics\Result\FailureInterface;
+use Laminas\Diagnostics\Result\SkipInterface;
+use Laminas\Diagnostics\Result\WarningInterface;
+use Laminas\Diagnostics\Runner\Reporter\BasicConsole;
+use Laminas\Diagnostics\Runner\Runner;
 
 final class Doctor
 {

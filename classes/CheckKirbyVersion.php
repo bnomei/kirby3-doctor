@@ -7,10 +7,10 @@ namespace Bnomei;
 use Bnomei\Interfaces\Doctor;
 use Exception;
 use Kirby\Http\Remote;
-use ZendDiagnostics\Check\CheckInterface;
-use ZendDiagnostics\Result\Failure;
-use ZendDiagnostics\Result\Success;
-use ZendDiagnostics\Result\Skip;
+use Laminas\Diagnostics\Check\CheckInterface;
+use Laminas\Diagnostics\Result\Failure;
+use Laminas\Diagnostics\Result\Success;
+use Laminas\Diagnostics\Result\Skip;
 
 final class CheckKirbyVersion implements CheckInterface, Doctor
 {

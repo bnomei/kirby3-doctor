@@ -1,5 +1,4 @@
 {
-  "Bnomei\\CheckComposerSecurity": true,
   "Bnomei\\CheckGitFolder": true,
   "Bnomei\\CheckSSL": true,
   "Bnomei\\CheckHtaccess": true,
