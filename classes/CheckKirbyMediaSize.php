@@ -15,19 +15,19 @@ final class CheckKirbyMediaSize implements CheckInterface, Doctor
     public function check()
     {
         $factor = option('bnomei.doctor.checkkirbymediasize.factor', 2);
-        $cacheSize = Dir::size(kirby()->roots()->cache());
+        $cacheSize = Dir::size(kirby()->roots()->media());
         $contentSize = Dir::size(kirby()->roots()->content());
 
         if (floatval($cacheSize) < floatval($contentSize) * floatval($factor)) {
-            return new Success('Media-Folder is not exceeding set limit of '.$factor.'x size of content.');
+            return new Success('Media-Folder ('.Dir::niceSize(kirby()->roots()->media()).') is not exceeding set limit of '.$factor.'x size of content ('.Dir::niceSize(kirby()->roots()->content()).').');
         }
 
-        return new Failure('Media-Folder is bigger than '.$factor.'x size of content.');
+        return new Failure('Media-Folder ('.Dir::niceSize(kirby()->roots()->media()).') is bigger than '.$factor.'x size of content ('.Dir::niceSize(kirby()->roots()->content()).').');
     }
 
     public function getLabel()
     {
-        $factor = option('bnomei.doctor.checkkirbycachesize.factor', 2);
+        $factor = option('bnomei.doctor.checkkirbymediasize.factor', 2);
         return 'Check if Media-Folder is bigger than '.$factor.'x size of content.';
     }
 

@@ -19,16 +19,16 @@ final class CheckKirbyCacheSize implements CheckInterface, Doctor
         $contentSize = Dir::size(kirby()->roots()->content());
 
         if (floatval($cacheSize) < floatval($contentSize) * floatval($factor)) {
-            return new Success('Cache (Files) is not exceeding set limit of '.$factor.'x size of content.');
+            return new Success('Cache ('.Dir::niceSize(kirby()->roots()->cache()).') is not exceeding set limit of '.$factor.'x size of content ('.Dir::niceSize(kirby()->roots()->content()).').');
         }
 
-        return new Failure('Cache (Files) is bigger than '.$factor.'x size of content.');
+        return new Failure('Cache ('.Dir::niceSize(kirby()->roots()->cache()).') is bigger than '.$factor.'x size of content ('.Dir::niceSize(kirby()->roots()->content()).').');
     }
 
     public function getLabel()
     {
         $factor = option('bnomei.doctor.checkkirbycachesize.factor', 2);
-        return 'Check if Cache (Files) is bigger than '.$factor.'x size of content.';
+        return 'Check if Cache is bigger than '.$factor.'x size of content.';
     }
 
     public function needsKirbyApp(): bool
