@@ -1,3 +1,7 @@
+> <br>
+> With Kirby 3.7 introducing an improved system view most important checks have been covered. Thus I will not continue to work on this plugin.
+> <br><br>
+
 # Kirby 3 Doctor
 
 ![Release](https://flat.badgen.net/packagist/v/bnomei/kirby3-doctor?color=ae81ff)
@@ -8,6 +12,8 @@
 [![Twitter](https://flat.badgen.net/badge/twitter/bnomei?color=66d9ef)](https://twitter.com/bnomei)
 
 Plugin to check health of your CMS installation
+
+>
 
 ## Commercial Usage
 
